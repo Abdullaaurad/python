@@ -1,0 +1,10 @@
+print("Enter inputs :",end="")
+x=float(input())
+print(x)
+print("Enter inputs :",end="")
+y=int(input())
+print(max(x,y))
+print(min(x,y))
+
+z=int(x)
+print(z)

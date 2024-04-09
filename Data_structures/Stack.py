@@ -7,6 +7,11 @@ def IsEmpty():
     else:
         return False
     
+def peek():
+    global Top
+    value=Stack[Top]
+    print("Top element =",value)
+
 def Push(value):
     global Top
     Stack.insert(0,value)
@@ -21,6 +26,19 @@ def Pop():
     Top=Top-1
     return value
 
+def search(value):
+    global Top
+    found=0
+    k=0
+    while(k<=Top):
+        if(Stack[k]==value):
+            found=1
+            print("Value is found on index =",k)
+            break
+        k=k+1
+    if(found==0):
+        print("The value is not in Stack")
+
 x = int(input("Enter how many elements to enter: "))
 for i in range(x):
         print("Enter element", i, "=", end="")
@@ -28,5 +46,6 @@ for i in range(x):
         Push(y)
 
 print("Top element in Stack =",Pop())
-
+peek()
+search(5)
 print("Stack:", Stack)

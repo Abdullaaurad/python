@@ -38,7 +38,7 @@ def MaxValue(head):
     if head is None:
         print("The tree is empty")
     elif(head.right==None):
-        print(f"\nmax value ={head.data}")
+        return (head.data)
     else:
         MaxValue(head.right)
     
@@ -80,6 +80,30 @@ def Search(head,value):
     else:
         print("The value is found")
 
+def Delete(head,value):
+    if head is None:
+        print("value is not inside Tree")
+        return head
+    elif(value<head.data):
+        head.left=Delete(head.left,value)
+    elif(value>head.data):
+        head.right=Delete(head.right,value)
+    else:
+        if head.left is None:
+            temp = head.right
+            head = None
+            return temp
+        elif head.right is None:
+            temp = head.left
+            head = None
+            return temp
+        
+        temp = MaxValue(head.left)
+        head.data = temp
+        head.left = Delete(head.left,temp)
+    return head
+
+
 x = int(input("Enter how many elements to enter: "))
 head=None
 for i in range(x):
@@ -96,6 +120,7 @@ PreOrderTraversal(head)
 print("\nPost-order traversal:")
 PostOrderTraversal(head)
 
+'''
 MaxValue(head)
 MinValue(head)
 
@@ -109,3 +134,10 @@ InOrderTraversal(new)
 
 ID=int(input("\nEnter the value to search ="))
 Search(head,ID)
+
+ID=int(input("\nEnter the value to delete ="))
+Delete(head,ID)
+
+print("\nIn-order traversal:")
+InOrderTraversal(head)
+'''

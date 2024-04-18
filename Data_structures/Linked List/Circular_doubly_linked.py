@@ -3,6 +3,7 @@ class Node:
         self.Name=Name
         self.Marks=Marks
         self.next=None
+        self.previous=None
     
     def printNode(self):
         print(f"\nThe student Name ={self.Name}")
@@ -20,19 +21,25 @@ def createNode():
     return Node(Name,Marks)
 
 def PrintList(head):
-    current = head
-    while current:
+    current = head.next
+    head.printNode()
+    while current!= head:
         current.printNode()
         current = current.next
 
 def Add(head):
     new_node=createNode()
     if not head:
+        new_node.next=new_node
+        new_node.previous=new_node
         return new_node
     current = head
-    while current.next:
+    while current.next != head:
         current = current.next
     current.next = new_node
+    new_node.previous=current
+    new_node.next=head
+    head.previous=new_node
     return head
     
 def Remove(head, Name):
@@ -40,6 +47,11 @@ def Remove(head, Name):
         print("List is empty.")
         return None
     if head.Name == Name:
+        k = head
+        while(k.next != head):
+            k=k.next
+        k.next=head.next
+        (head.next).previous=k
         return head.next
     prev = None
     current = head
@@ -49,25 +61,33 @@ def Remove(head, Name):
     if not current:
         print("Student not found.")
         return head
-    prev.next = current.next
+    ptr=current.next
+    prev.next = ptr
+    ptr.previous=prev
     return head
 
 def Search(head, Name):
-    current = head
-    while current:
+    found=False
+    current = head.next
+    if(head.Name==Name):
+        found=True
+        head.printNode()
+    while (current != head):
         if current.Name == Name:
+            found=True
             current.printNode()
             return
         current = current.next
-    print("Student not found.")
+    if(found == False):
+       print("Student Not in list")
 
 def Min(head):
     if not head:
         print("List is empty.")
         return
-    current=head
-    Min=current
-    while(current):
+    current=head.next
+    Min=head
+    while(current!= head):
         if(current.Marks<Min.Marks):
             Min=current
         current=current.next
@@ -77,9 +97,9 @@ def Max(head):
     if not head:
         print("List is empty.")
         return
-    current=head
-    Max=current
-    while(current):
+    current=head.next
+    Max=head
+    while(current!= head):
         if(current.Marks>Max.Marks):
             Max=current
         current=current.next
@@ -93,13 +113,15 @@ for i in range(x):
 
 PrintList(head)
 
-ID=input("\nEnter the student name to search =")
-Search(head,ID)
-
 Name=str(input("\nEnter student Name to remove ="))
 head=Remove(head,Name)
 PrintList(head)
 
+ID=input("\nEnter the student name to search =")
+Search(head,ID)
+
+print("\nDetails of student having min marks",end="")
 Min(head)
+print("\nDetails of student having max marks",end="")
 Max(head)
 

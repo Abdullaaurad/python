@@ -1,0 +1,149 @@
+\documentclass{article}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage[margin=1cm]{geometry}
+
+% Define colors for syntax highlighting
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+% Define Python language for listings package
+\lstdefinestyle{python}{
+    language=Python,
+    backgroundcolor=\color{backcolour},
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{blue},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\small,
+    breaklines=true,
+    breakatwhitespace=true,
+    numbers=left,
+    showstringspaces=false,
+    captionpos=b,
+}
+
+\begin{document}
+
+\title{Writing Test Cases in Python}
+\author{Your Name}
+\date{\today}
+\maketitle
+
+\section{Introduction}
+
+This document demonstrates how to write and run test cases in Python using various techniques.
+
+\subsection{Naming Conventions}
+
+Test files should follow the naming convention \texttt{test\_<module\_name>.py}. For example, if your module is named \texttt{calculator.py}, your test file should be named \texttt{test\_calculator.py}.
+
+\subsection{Importing Modules}
+
+In your test file (\texttt{test\_<module\_name>.py}), import the necessary modules and functions/classes from your main Python file (\texttt{<module\_name>.py}) that you want to test. For example:
+
+\begin{lstlisting}[style=python]
+from calculator import add_numbers
+\end{lstlisting}
+
+\subsection{Writing Test Cases}
+
+Use a testing framework like \texttt{unittest} or \texttt{pytest} to write your test cases. Here's an example using \texttt{unittest}:
+
+\begin{lstlisting}[style=python]
+import unittest
+from calculator import add_numbers
+
+class TestCalculator(unittest.TestCase):
+    def test_add_numbers(self):
+        result = add_numbers(3, 5)
+        self.assertEqual(result, 8)  # Assert that the result is equal to the expected value
+\end{lstlisting}
+
+\subsection{Running the Tests}
+
+After writing your test cases, run them using a test runner. For \texttt{pytest}, you would run the tests with:
+
+\begin{lstlisting}[language=bash]
+pytest test_calculator.py
+\end{lstlisting}
+
+To run a specific function in the test file
+\begin{lstlisting}[language=bash]
+pytest test_Math.py::test_Add
+\end{lstlisting}
+
+\begin{lstlisting}[language=bash]
+pytest -k "add" test_Math.py               #runs all functions that has 'Add' init
+pytest -k "add or string" test_Math.py     # runs 'Add' or 'string' init
+\end{lstlisting}
+
+to run all the test cases and return a explanation if a case fails
+\begin{lstlisting}[language=bash]
+pytest -v -x
+\end{lstlisting}
+
+\newpage
+\section{Complex Test Example}
+
+\begin{lstlisting}[style=python]
+import subprocess
+
+def test_user_input_output():
+    user_inputs=["Abdulla",22]
+    # Run the main program and capture the output
+    process = subprocess.Popen(['python', '1.py'], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    out, err = process.communicate(input='Abdulla\n22\n')  # Simulate user input for name and age
+    i=0
+    for item in out:
+        print(item,end="")
+        if(item == ':'):
+            print(user_inputs[i])
+            i+=1
+            print("\n")
+
+if __name__ == "__main__":
+    test_user_input_output()
+\end{lstlisting}
+
+\begin{enumerate}
+    \item \textbf{Importing subprocess:}
+    \begin{itemize}
+        \item The subprocess module is imported to run external processes (in this case, running another Python script).
+    \end{itemize}
+    
+    \item \textbf{Test Function \texttt{test\_user\_input\_output}:}
+    \begin{itemize}
+        \item This function simulates user input and captures the output of another Python script (1.py).
+    \end{itemize}
+    
+    \item \textbf{User Inputs Simulation:}
+    \begin{itemize}
+        \item User inputs are defined as "Abdulla" (name) and 22 (age) to simulate user interaction with the program.
+    \end{itemize}
+    
+    \item \textbf{Running the Main Program:}
+    \begin{itemize}
+        \item The subprocess.Popen function is used to run the main program (1.py) and capture its output.
+    \end{itemize}
+    
+    \item \textbf{Communicating User Input:}
+    \begin{itemize}
+        \item The communicate method is used to send user input ("Abdulla\n22\n") to the program being tested.
+    \end{itemize}
+    
+    \item \textbf{Processing Output:}
+    \begin{itemize}
+        \item The output received from the program is processed character by character in a loop.
+        \item If a colon (:) is encountered in the output, it is assumed to be a prompt for user input, and the corresponding user input is printed.
+    \end{itemize}
+    
+    \item \textbf{Test Execution:}
+    \begin{itemize}
+        \item The \texttt{test\_user\_input\_output} function is executed if the script is run directly (\texttt{\_\_name\_\_ == "\_\_main\_\_"}).
+    \end{itemize}
+\end{enumerate}
+
+\end{document}
